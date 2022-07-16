@@ -1,0 +1,76 @@
+package ${package}.modules.${moduleName}.controller;
+
+import ${package}.common.constant.Constant;
+import ${package}.common.page.PageData;
+import ${package}.common.utils.Result;
+import ${package}.common.validator.AssertUtils;
+import ${package}.common.validator.ValidatorUtils;
+import ${package}.common.validator.group.AddGroup;
+import ${package}.common.validator.group.DefaultGroup;
+import ${package}.common.validator.group.UpdateGroup;
+import ${package}.modules.${moduleName}.dto.${className}DTO;
+import ${package}.modules.${moduleName}.service.${className}Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
+
+
+/**
+ * ${comments}
+ *
+ * @author ${author} ${email}
+ * @since ${version} ${date}
+ */
+@RestController
+@RequestMapping("${moduleName}/${pathName}")
+public class ${className}Controller {
+    @Autowired
+    private ${className}Service ${classname}Service;
+
+    @GetMapping("page")
+    public Result<PageData<${className}DTO>> page(@RequestParam Map<String, Object> params){
+        PageData<${className}DTO> page = ${classname}Service.page(params);
+
+        return new Result<PageData<${className}DTO>>().ok(page);
+    }
+
+    @GetMapping("{id}")
+    public Result<${className}DTO> get(@PathVariable("id") Long id){
+        ${className}DTO data = ${classname}Service.get(id);
+
+        return new Result<${className}DTO>().ok(data);
+    }
+
+    @PostMapping
+    public Result save(@RequestBody ${className}DTO dto){
+        //效验数据
+        ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
+
+        ${classname}Service.save(dto);
+
+        return new Result();
+    }
+
+    @PutMapping
+    public Result update(@RequestBody ${className}DTO dto){
+        //效验数据
+        ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
+
+        ${classname}Service.update(dto);
+
+        return new Result();
+    }
+
+    @DeleteMapping
+    public Result delete(@RequestBody Long[] ids){
+        //效验数据
+        AssertUtils.isArrayEmpty(ids, "id");
+
+        ${classname}Service.delete(ids);
+
+        return new Result();
+    }
+}

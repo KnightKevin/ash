@@ -1,0 +1,11 @@
+spring:
+  name: ash-coupon
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        namespace: eacbe053-2274-44d0-b48a-8a6dfb8ae872
+        ext-config:
+          - data-id: application.yml
+            group: dev
+            refresh: true
