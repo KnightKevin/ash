@@ -1,0 +1,13 @@
+server:
+  port: 3000
+
+spring:
+  application:
+    name: ash-third-service
+
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+

@@ -1,0 +1,34 @@
+server:
+  port: 88
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      loadbalancer:
+        use404: true
+      routes:
+        - id: product
+          uri: lb://ash-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/product/?(?<segment>.*), /product/$\{segment}
+
+        - id: third-service
+          uri: lb://ash-third-service
+          predicates:
+            - Path=/api/third-service/**
+          filters:
+            - RewritePath=/api/third-service/?(?<segment>.*), /third-service/$\{segment}
+
+        - id: renren_admin
+          uri: lb://renren-admin
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/?(?<segment>.*), /renren-fast/$\{segment}
+
+  application:
+    name: ash-gateway
