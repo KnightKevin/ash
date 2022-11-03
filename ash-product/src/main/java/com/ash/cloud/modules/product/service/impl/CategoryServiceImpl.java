@@ -2,10 +2,7 @@ package com.ash.cloud.modules.product.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -52,6 +49,29 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
 
         return tree;
+    }
+
+    @Override
+    public Long[] findCatelogPath(Long catelogId) {
+
+        List<Long> paths = new ArrayList<>();
+
+        findParentPath(catelogId, paths);
+
+        Collections.reverse(paths);
+
+        return paths.toArray(new Long[paths.size()]);
+    }
+
+
+    private void findParentPath(Long catelogId, List<Long> paths) {
+
+        paths.add(catelogId);
+
+        CategoryEntity byId = this.getById(catelogId);
+        if (byId.getParentCid() != 0) {
+            findParentPath(byId.getParentCid(), paths);
+        }
     }
 
     /**
