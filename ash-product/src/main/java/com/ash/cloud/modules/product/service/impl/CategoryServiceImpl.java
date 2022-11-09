@@ -1,5 +1,8 @@
 package com.ash.cloud.modules.product.service.impl;
 
+import com.ash.cloud.modules.product.service.CategoryBrandRelationService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -14,10 +17,14 @@ import com.ash.cloud.common.utils.Query;
 import com.ash.cloud.modules.product.dao.CategoryDao;
 import com.ash.cloud.modules.product.entity.CategoryEntity;
 import com.ash.cloud.modules.product.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
+
+    @Autowired
+    CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -61,6 +68,18 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         Collections.reverse(paths);
 
         return paths.toArray(new Long[paths.size()]);
+    }
+
+    /**
+     * 级联更新所有关联的数据
+     * */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateCascade(CategoryEntity category) {
+        this.updateById(category);
+        if (StringUtils.isNotEmpty(category.getName())) {
+            categoryBrandRelationService.updateCategory(category.getCatId(), category.getName());
+        }
     }
 
 

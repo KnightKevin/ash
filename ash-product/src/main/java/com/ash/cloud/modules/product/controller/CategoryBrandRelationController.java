@@ -1,14 +1,12 @@
 package com.ash.cloud.modules.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ash.cloud.modules.product.entity.CategoryBrandRelationEntity;
 import com.ash.cloud.modules.product.service.CategoryBrandRelationService;
@@ -31,13 +29,15 @@ public class CategoryBrandRelationController {
     private CategoryBrandRelationService categoryBrandRelationService;
 
     /**
-     * 列表
+     * 获取当前品牌的所有分类列表
      */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = categoryBrandRelationService.queryPage(params);
+    @GetMapping("/catelog/list")
+    public R catelogList(@RequestParam(value = "brandId") Long brandId){
+        List<CategoryBrandRelationEntity> list = categoryBrandRelationService.list(
+                new QueryWrapper<CategoryBrandRelationEntity>().eq("brand_id", brandId)
+        );
 
-        return R.ok().put("page", page);
+        return R.ok().put("data", list);
     }
 
 
@@ -54,9 +54,9 @@ public class CategoryBrandRelationController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody CategoryBrandRelationEntity categoryBrandRelation){
-		categoryBrandRelationService.save(categoryBrandRelation);
+		categoryBrandRelationService.saveDetail(categoryBrandRelation);
 
         return R.ok();
     }

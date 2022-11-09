@@ -1,6 +1,6 @@
 package com.ash.cloud.modules.product.controller;
 
-import com.ash.cloud.common.utils.Result;
+import com.ash.cloud.common.utils.R;
 import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
 import io.minio.http.Method;
@@ -47,7 +47,7 @@ public class MinioController {
     private String bucket;
 
     @GetMapping("getPresignedObjectUrl")
-    public Result<Map<String, String>> getPresignedObjectUrl(String name) throws Exception {
+    public R getPresignedObjectUrl(String name) throws Exception {
 
         MinioClient minioClient = MinioClient.builder()
                 .endpoint(endpoint, port, secure)
@@ -65,6 +65,6 @@ public class MinioController {
         Map<String, String> map = new HashMap<>();
         map.put("url", url);
 
-        return new Result<Map<String, String>>().ok(map);
+        return R.ok().put("url", url);
     }
 }
