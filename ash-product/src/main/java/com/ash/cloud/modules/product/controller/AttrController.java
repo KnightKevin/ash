@@ -3,6 +3,8 @@ package com.ash.cloud.modules.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.ash.cloud.modules.product.vo.AttrResponseVo;
+import com.ash.cloud.modules.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,15 +64,17 @@ public class AttrController {
     public R info(@PathVariable("attrId") Long attrId){
 		AttrEntity attr = attrService.getById(attrId);
 
-        return R.ok().put("attr", attr);
+        AttrResponseVo vo = attrService.getInfoById(attrId);
+
+        return R.ok().put("attr", vo);
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody AttrEntity attr){
-		attrService.save(attr);
+    public R save(@RequestBody AttrVo attr){
+		attrService.saveAttr(attr);
 
         return R.ok();
     }
@@ -79,8 +83,8 @@ public class AttrController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody AttrEntity attr){
-		attrService.updateById(attr);
+    public R update(@RequestBody AttrVo attr){
+		attrService.updateAttr(attr);
 
         return R.ok();
     }

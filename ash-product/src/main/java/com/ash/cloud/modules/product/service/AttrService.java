@@ -1,5 +1,7 @@
 package com.ash.cloud.modules.product.service;
 
+import com.ash.cloud.modules.product.vo.AttrResponseVo;
+import com.ash.cloud.modules.product.vo.AttrVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ash.cloud.common.utils.PageUtils;
 import com.ash.cloud.modules.product.entity.AttrEntity;
@@ -19,5 +21,10 @@ public interface AttrService extends IService<AttrEntity> {
 
     PageUtils queryBaseAttrPage(Map<String, Object> params, String type, Long catelogId);
 
+    void saveAttr(AttrVo attr);
+
+    AttrResponseVo getInfoById(Long attrId);
+
+    void updateAttr(AttrVo attr);
 }
 
