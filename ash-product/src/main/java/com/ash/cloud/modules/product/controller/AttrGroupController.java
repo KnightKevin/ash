@@ -1,15 +1,15 @@
 package com.ash.cloud.modules.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.ash.cloud.modules.product.entity.AttrEntity;
+import com.ash.cloud.modules.product.service.AttrService;
 import com.ash.cloud.modules.product.service.CategoryService;
+import com.ash.cloud.modules.product.vo.AttrGroupRelationVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ash.cloud.modules.product.entity.AttrGroupEntity;
 import com.ash.cloud.modules.product.service.AttrGroupService;
@@ -33,6 +33,9 @@ public class AttrGroupController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private AttrService attrService;
 
     /**
      * 列表
@@ -84,6 +87,21 @@ public class AttrGroupController {
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] attrGroupIds){
 		attrGroupService.removeByIds(Arrays.asList(attrGroupIds));
+
+        return R.ok();
+    }
+
+
+    @GetMapping("/{attrgroupId}/attr/relation")
+    public R listRelationAttr(@PathVariable("attrgroupId") Long attrgroupId) {
+        List<AttrEntity> list = attrService.getRelationAttr(attrgroupId);
+
+        return R.ok().put("data", list);
+    }
+
+    @PostMapping("/attr/relation/delete")
+    public R deleteRelationAttr(@RequestBody List<AttrGroupRelationVo> list) {
+        attrService.deleteAttrGroupRelation(list);
 
         return R.ok();
     }

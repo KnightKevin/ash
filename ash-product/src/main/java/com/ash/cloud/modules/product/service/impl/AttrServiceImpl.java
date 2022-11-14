@@ -7,15 +7,15 @@ import com.ash.cloud.modules.product.entity.AttrGroupEntity;
 import com.ash.cloud.modules.product.entity.CategoryEntity;
 import com.ash.cloud.modules.product.service.AttrGroupService;
 import com.ash.cloud.modules.product.service.CategoryService;
+import com.ash.cloud.modules.product.vo.AttrGroupRelationVo;
 import com.ash.cloud.modules.product.vo.AttrResponseVo;
 import com.ash.cloud.modules.product.vo.AttrVo;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,7 +30,6 @@ import com.ash.cloud.modules.product.dao.AttrDao;
 import com.ash.cloud.modules.product.entity.AttrEntity;
 import com.ash.cloud.modules.product.service.AttrService;
 import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.Attr;
 
 
 @Service("attrService")
@@ -127,6 +126,32 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         relation.setAttrId(attr.getAttrId());
         relation.setAttrGroupId(attr.getAttrGroupId());
         relationDao.insert(relation);
+    }
+
+    @Override
+    public List<AttrEntity> getRelationAttr(Long attrgroupId) {
+
+        List<AttrAttrgroupRelationEntity> relations = relationDao.selectList(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_group_id", attrgroupId));
+
+        List<Long> attrIds = relations.stream().map(AttrAttrgroupRelationEntity::getAttrId).collect(Collectors.toList());
+
+        if (attrIds.size() == 0) {
+            return Collections.emptyList();
+        }
+
+        List<AttrEntity> list = this.listByIds(attrIds);
+
+        return list;
+    }
+
+    @Override
+    public void deleteAttrGroupRelation(List<AttrGroupRelationVo> list) {
+        List<AttrAttrgroupRelationEntity> entities = list.stream().map(i->{
+            AttrAttrgroupRelationEntity entity = new AttrAttrgroupRelationEntity();
+            BeanUtils.copyProperties(i, entity);
+            return entity;
+        }).collect(Collectors.toList());
+        relationDao.deleteBatchRelation(entities);
     }
 
     private AttrResponseVo convertToVO(AttrEntity entity) {

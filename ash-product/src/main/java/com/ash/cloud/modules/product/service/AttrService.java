@@ -1,11 +1,13 @@
 package com.ash.cloud.modules.product.service;
 
+import com.ash.cloud.modules.product.vo.AttrGroupRelationVo;
 import com.ash.cloud.modules.product.vo.AttrResponseVo;
 import com.ash.cloud.modules.product.vo.AttrVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ash.cloud.common.utils.PageUtils;
 import com.ash.cloud.modules.product.entity.AttrEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,5 +28,9 @@ public interface AttrService extends IService<AttrEntity> {
     AttrResponseVo getInfoById(Long attrId);
 
     void updateAttr(AttrVo attr);
+
+    List<AttrEntity> getRelationAttr(Long attrgroupId);
+
+    void deleteAttrGroupRelation(List<AttrGroupRelationVo> list);
 }
 
