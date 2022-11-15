@@ -99,10 +99,22 @@ public class AttrGroupController {
         return R.ok().put("data", list);
     }
 
+    @GetMapping("/{attrgroupId}/noattr/relation")
+    public R listNoRelationAttr(@PathVariable("attrgroupId") Long attrgroupId, @RequestParam Map<String, Object> params) {
+        PageUtils page = attrService.getNoRelationAttr(attrgroupId, params);
+
+        return R.ok().put("page", page);
+    }
     @PostMapping("/attr/relation/delete")
     public R deleteRelationAttr(@RequestBody List<AttrGroupRelationVo> list) {
         attrService.deleteAttrGroupRelation(list);
 
+        return R.ok();
+    }
+
+    @PostMapping("/attr/relation")
+    public R saveAttrRelation(@RequestBody List<AttrGroupRelationVo> list) {
+        attrService.saveAttrGroupRelation(list);
         return R.ok();
     }
 

@@ -18,5 +18,12 @@
         </foreach>
     </delete>
 
+    <insert id="insertBatch">
+        insert into `pms_attr_attrgroup_relation`(`attr_id`, `attr_group_id`) values
+        <foreach collection="entities" item="i" separator=",">
+            (#{i.attrId},#{i.attrGroupId})
+        </foreach>
+    </insert>
+
 
 </mapper>
