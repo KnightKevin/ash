@@ -3,8 +3,12 @@ package com.ash.cloud.modules.product.controller;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.ash.cloud.modules.product.entity.BrandEntity;
+import com.ash.cloud.modules.product.vo.BrandVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +42,23 @@ public class CategoryBrandRelationController {
         );
 
         return R.ok().put("data", list);
+    }
+
+    /**
+     * 获取当前分类下的所有品牌
+     */
+    @GetMapping("/brands/list")
+    public R listBrand(@RequestParam(value = "catId") Long catId){
+        List<BrandEntity> list = categoryBrandRelationService.listBrandByCatelogId(catId);
+
+        List<BrandVo> vos = list.stream().map(i->{
+            BrandVo vo = new BrandVo();
+            vo.setBrandId(i.getBrandId());
+            vo.setBrandName(i.getName());
+            return vo;
+        }).collect(Collectors.toList());
+
+        return R.ok().put("data", vos);
     }
 
 

@@ -16,6 +16,13 @@ spring:
           filters:
             - RewritePath=/api/product/?(?<segment>.*), /product/$\{segment}
 
+        - id: member
+          uri: lb://ash-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - RewritePath=/api/member/?(?<segment>.*), /member/$\{segment}
+
         - id: third-service
           uri: lb://ash-third-service
           predicates:
