@@ -8,6 +8,7 @@ import com.ash.cloud.modules.product.entity.AttrEntity;
 import com.ash.cloud.modules.product.service.AttrService;
 import com.ash.cloud.modules.product.service.CategoryService;
 import com.ash.cloud.modules.product.vo.AttrGroupRelationVo;
+import com.ash.cloud.modules.product.vo.AttrGroupWithAttrsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -116,6 +117,18 @@ public class AttrGroupController {
     public R saveAttrRelation(@RequestBody List<AttrGroupRelationVo> list) {
         attrService.saveAttrGroupRelation(list);
         return R.ok();
+    }
+
+    /**
+     *
+     * */
+    @GetMapping("/{catelogId}/withattr")
+    public R getGroupWithAttrs(@PathVariable(value = "catelogId") Long catelogId) {
+
+        List<AttrGroupWithAttrsVo> list = attrGroupService.listGroupWithAttrsByCatelogId(catelogId);
+
+
+        return R.ok().put("data", list);
     }
 
 }
