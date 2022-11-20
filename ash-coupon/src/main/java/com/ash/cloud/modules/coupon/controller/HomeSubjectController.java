@@ -1,9 +1,8 @@
-package com.ash.cloud.modules.product.controller;
+package com.ash.cloud.modules.coupon.controller;
 
 import java.util.Arrays;
 import java.util.Map;
 
-import com.ash.cloud.modules.product.vo.spu.SpuSaveVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,32 +10,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ash.cloud.modules.product.entity.SpuInfoEntity;
-import com.ash.cloud.modules.product.service.SpuInfoService;
+import com.ash.cloud.modules.coupon.entity.HomeSubjectEntity;
+import com.ash.cloud.modules.coupon.service.HomeSubjectService;
 import com.ash.cloud.common.utils.PageUtils;
 import com.ash.cloud.common.utils.R;
 
 
 
 /**
- * spu信息
+ * 首页专题表【jd首页下面很多专题，每个专题链接新的页面，展示专题商品信息】
  *
  * @author Simon
  * @email simon@gmail.com
- * @date 2022-10-12 21:08:40
+ * @date 2022-11-20 22:38:36
  */
 @RestController
-@RequestMapping("product/spuinfo")
-public class SpuInfoController {
+@RequestMapping("coupon/homesubject")
+public class HomeSubjectController {
     @Autowired
-    private SpuInfoService spuInfoService;
+    private HomeSubjectService homeSubjectService;
 
     /**
      * 列表
      */
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = spuInfoService.queryPage(params);
+        PageUtils page = homeSubjectService.queryPage(params);
 
         return R.ok().put("page", page);
     }
@@ -47,17 +46,17 @@ public class SpuInfoController {
      */
     @RequestMapping("/info/{id}")
     public R info(@PathVariable("id") Long id){
-		SpuInfoEntity spuInfo = spuInfoService.getById(id);
+		HomeSubjectEntity homeSubject = homeSubjectService.getById(id);
 
-        return R.ok().put("spuInfo", spuInfo);
+        return R.ok().put("homeSubject", homeSubject);
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody SpuSaveVo vo){
-		spuInfoService.saveSpuInfoVo(vo);
+    public R save(@RequestBody HomeSubjectEntity homeSubject){
+		homeSubjectService.save(homeSubject);
 
         return R.ok();
     }
@@ -66,8 +65,8 @@ public class SpuInfoController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody SpuInfoEntity spuInfo){
-		spuInfoService.updateById(spuInfo);
+    public R update(@RequestBody HomeSubjectEntity homeSubject){
+		homeSubjectService.updateById(homeSubject);
 
         return R.ok();
     }
@@ -77,7 +76,7 @@ public class SpuInfoController {
      */
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] ids){
-		spuInfoService.removeByIds(Arrays.asList(ids));
+		homeSubjectService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }
