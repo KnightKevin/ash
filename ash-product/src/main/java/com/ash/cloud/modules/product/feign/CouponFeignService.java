@@ -1,5 +1,6 @@
 package com.ash.cloud.modules.product.feign;
 
+import com.ash.cloud.common.to.SkuReductionTo;
 import com.ash.cloud.common.to.SpuBoundTo;
 import com.ash.cloud.common.utils.R;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -11,4 +12,7 @@ public interface CouponFeignService {
 
     @PostMapping("coupon/spubounds/save")
     R saveSpuBounds(@RequestBody SpuBoundTo spuBoundTo);
+
+    @PostMapping("coupon/skufullreduction/saveinfo")
+    void saveSkuReduction(@RequestBody SkuReductionTo skuReductionTo);
 }

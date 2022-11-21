@@ -1,4 +1,5 @@
 package com.ash.cloud.modules.product.vo.spu;
+import com.ash.cloud.common.to.MemberPrice;
 import lombok.Data;
 
 import java.math.BigDecimal;

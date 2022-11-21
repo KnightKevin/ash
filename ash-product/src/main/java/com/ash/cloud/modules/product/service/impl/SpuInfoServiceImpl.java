@@ -1,5 +1,6 @@
 package com.ash.cloud.modules.product.service.impl;
 
+import com.ash.cloud.common.to.SkuReductionTo;
 import com.ash.cloud.common.to.SpuBoundTo;
 import com.ash.cloud.modules.product.entity.*;
 import com.ash.cloud.modules.product.feign.CouponFeignService;
@@ -143,6 +144,12 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
                 return skuSaleAttrValue;
             }).collect(Collectors.toList());
             skuSaleAttrValueService.saveBatch(skuAttrValues);
+
+            // sku的优惠信息、满减信息
+            SkuReductionTo skuReductionTo = new SkuReductionTo();
+            BeanUtils.copyProperties(i, skuReductionTo);
+            skuReductionTo.setSkuId(skuId);
+            couponFeignService.saveSkuReduction(skuReductionTo);
 
         }
 

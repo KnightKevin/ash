@@ -1,5 +1,6 @@
 package com.ash.cloud.modules.coupon.service;
 
+import com.ash.cloud.common.to.SkuReductionTo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ash.cloud.common.utils.PageUtils;
 import com.ash.cloud.modules.coupon.entity.SkuFullReductionEntity;
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface SkuFullReductionService extends IService<SkuFullReductionEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void saveInfo(SkuReductionTo skuReduction);
 }
 
