@@ -37,6 +37,8 @@
         <module>ash-member</module>
         <module>ash-product</module>
         <module>ash-third-service</module>
+        <module>ash-ware</module>
+
 
 
         <module>renren-fast</module>
